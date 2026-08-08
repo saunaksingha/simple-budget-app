@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:simple_budget_app/themes/add_text_styles.dart';
+import 'package:simple_budget_app/themes/app_text_styles.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/utils/formatter.dart';

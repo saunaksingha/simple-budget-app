@@ -41,7 +41,7 @@ class AppTextStyles {
 
   static TextStyle primaryTextBold(BuildContext context) =>
       GoogleFonts.publicSans(
-        fontSize: context.sp(20),
+        fontSize: context.sp(16),
         fontWeight: FontWeight.bold,
       );
 
@@ -56,4 +56,8 @@ class AppTextStyles {
         fontSize: context.sp(14),
         fontWeight: FontWeight.normal,
       );
+  static TextStyle bodyTextBold(BuildContext context) => GoogleFonts.publicSans(
+    fontSize: context.sp(14),
+    fontWeight: FontWeight.bold,
+  );
 }

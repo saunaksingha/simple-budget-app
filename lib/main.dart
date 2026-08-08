@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_budget_app/screens/add_transaction.dart';
 import 'package:simple_budget_app/screens/home_screen.dart';
+import 'package:simple_budget_app/screens/select_transaction_category.dart';
+import 'package:simple_budget_app/themes/app_colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,8 +22,14 @@ class MyApp extends StatelessWidget {
       autoRebuild: false,
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(textTheme: GoogleFonts.publicSansTextTheme()),
-        home: HomeScreen(),
+        theme: ThemeData(
+          textTheme: GoogleFonts.publicSansTextTheme(),
+          scaffoldBackgroundColor: AppColors.backgroundColour,
+          appBarTheme: AppBarTheme().copyWith(
+            backgroundColor: AppColors.backgroundColour,
+          ),
+        ),
+        home: SelectTransactionCategory(),
       ),
     );
   }
