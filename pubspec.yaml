@@ -38,6 +38,7 @@ dependencies:
   flutter_screenutil_plus: ^1.6.0
   intl: ^0.20.3
   uuid: ^4.6.0
+  dotted_border: ^3.1.0
 
 dev_dependencies:
   flutter_test:

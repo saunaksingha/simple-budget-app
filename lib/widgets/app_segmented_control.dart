@@ -9,6 +9,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
   final T selectedItem;
   final ValueChanged<T> onChanged;
   final String Function(T item) labelBuilder;
+  final List<Color>? colors;
 
   const AppSegmentedControl({
     super.key,
@@ -16,7 +17,16 @@ class AppSegmentedControl<T> extends StatelessWidget {
     required this.selectedItem,
     required this.onChanged,
     required this.labelBuilder,
+    this.colors,
   });
+
+  Color getColour(int itemNumber) {
+    if (colors == null) {
+      return AppColors.secondryColour;
+    }
+
+    return colors![itemNumber];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,24 +39,24 @@ class AppSegmentedControl<T> extends StatelessWidget {
       ),
       child: Row(
         children: [
-          for (final item in items)
+          for (int index = 0; index < items.length; index++)
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => onChanged(item),
+                onTap: () => onChanged(items[index]),
                 child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: item == selectedItem
-                        ? AppColors.secondryColour
+                    color: items[index] == selectedItem
+                        ? getColour(index)
                         : AppColors.surfaceColor,
                     borderRadius: BorderRadius.circular(
                       context.r(AppSpacing.md),
                     ),
                   ),
                   child: Text(
-                    labelBuilder(item),
-                    style: item == selectedItem
+                    labelBuilder(items[index]),
+                    style: items[index] == selectedItem
                         ? AppTextStyles.bodyTextBold(
                             context,
                           ).copyWith(color: AppColors.backgroundCardColour)

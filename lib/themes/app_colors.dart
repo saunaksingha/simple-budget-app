@@ -5,7 +5,7 @@ class AppColors {
   static const backgroundCardColour = Color(0xFFFFFFFF);
   static const surfaceColor = Color(0xFFF9F3EC);
 
-  static const primaryColour = Color(0xFFFFDEA4);
+  static const primaryColour = Color(0xFFf9bb5f);
   static const secondryColour = Color(0xFF725B2D);
 
   static const textColourPrimary = Color(0xFF1D1B17);

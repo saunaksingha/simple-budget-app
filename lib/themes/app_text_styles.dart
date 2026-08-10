@@ -3,6 +3,8 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
+  //Headers
+
   static TextStyle titleLargeBold(BuildContext context) =>
       GoogleFonts.publicSans(
         fontSize: context.sp(40),
@@ -15,16 +17,23 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
   );
 
+  static TextStyle pageHeaderText(BuildContext context) =>
+      GoogleFonts.publicSans(
+        fontSize: context.sp(16),
+        fontWeight: FontWeight.w600,
+      );
+
   static TextStyle smallTextSemiBold(BuildContext context) =>
       GoogleFonts.publicSans(
         fontSize: context.sp(12),
         fontWeight: FontWeight.w600,
       );
 
-  static TextStyle pageHeaderText(BuildContext context) =>
+  //Primary Text
+  static TextStyle primaryTextRegular(BuildContext context) =>
       GoogleFonts.publicSans(
         fontSize: context.sp(16),
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.normal,
       );
 
   static TextStyle primaryTextMedium(BuildContext context) =>
@@ -45,12 +54,7 @@ class AppTextStyles {
         fontWeight: FontWeight.bold,
       );
 
-  static TextStyle primaryTextRegular(BuildContext context) =>
-      GoogleFonts.publicSans(
-        fontSize: context.sp(16),
-        fontWeight: FontWeight.normal,
-      );
-
+  //Body text
   static TextStyle bodyTextRegular(BuildContext context) =>
       GoogleFonts.publicSans(
         fontSize: context.sp(14),
