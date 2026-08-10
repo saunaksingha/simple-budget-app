@@ -65,9 +65,17 @@ class _IncomeCategoriesListWidgetState
                     SizedBox(width: context.w(AppSpacing.md)),
                     Text(
                       Formatters.capitalize(category.name),
-                      style: AppTextStyles.primaryTextSemiBold(
-                        context,
-                      ).copyWith(color: AppColors.secondryColour),
+                      style: AppTextStyles.primaryTextSemiBold(context)
+                          .copyWith(
+                            color: _selectedIncomeCategory == category
+                                ? AppColors.backgroundCardColour
+                                : AppColors.secondryColour,
+                            fontWeight: _selectedIncomeCategory == category
+                                ? FontWeight.w900
+                                : AppTextStyles.primaryTextSemiBold(
+                                    context,
+                                  ).fontWeight,
+                          ),
                     ),
                     const Spacer(),
                     Radio<IncomeCategory>(
@@ -75,10 +83,10 @@ class _IncomeCategoriesListWidgetState
                         states,
                       ) {
                         if (states.contains(WidgetState.selected)) {
-                          return AppColors.secondryColour;
+                          return AppColors.backgroundCardColour;
                         }
 
-                        return AppColors.textColourSecondry;
+                        return AppColors.secondryColour;
                       }),
                       value: category,
                     ),

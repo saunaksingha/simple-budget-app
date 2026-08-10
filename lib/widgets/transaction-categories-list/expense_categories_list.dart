@@ -66,9 +66,17 @@ class _ExpenseCategoriesListWidgetState
                     SizedBox(width: context.w(AppSpacing.md)),
                     Text(
                       Formatters.capitalize(category.name),
-                      style: AppTextStyles.primaryTextSemiBold(
-                        context,
-                      ).copyWith(color: AppColors.secondryColour),
+                      style: AppTextStyles.primaryTextSemiBold(context)
+                          .copyWith(
+                            color: _selectedExpenseCategory == category
+                                ? AppColors.backgroundCardColour
+                                : AppColors.secondryColour,
+                            fontWeight: _selectedExpenseCategory == category
+                                ? FontWeight.w900
+                                : AppTextStyles.primaryTextSemiBold(
+                                    context,
+                                  ).fontWeight,
+                          ),
                     ),
                     const Spacer(),
                     Radio<ExpenseCategory>(
@@ -76,10 +84,10 @@ class _ExpenseCategoriesListWidgetState
                         states,
                       ) {
                         if (states.contains(WidgetState.selected)) {
-                          return AppColors.secondryColour;
+                          return AppColors.backgroundCardColour;
                         }
 
-                        return AppColors.textColourSecondry;
+                        return AppColors.secondryColour;
                       }),
                       value: category,
                     ),

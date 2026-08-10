@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+enum WalletIcon {
+  wallet,
+  bank,
+  cash,
+  coins,
+  pocketMoney,
+  allowance,
+  savings,
+  creditCard,
+  investment,
+  emergencyFund,
+  business,
+  travel,
+  education,
+  bills,
+  shopping,
+  gift,
+  vault,
+  salary,
+}
+
+const Map<WalletIcon, IconData> walletIconMap = {
+  WalletIcon.wallet: LucideIcons.wallet,
+  WalletIcon.bank: LucideIcons.landmark,
+  WalletIcon.cash: LucideIcons.banknote,
+  WalletIcon.coins: LucideIcons.coins,
+  WalletIcon.pocketMoney: LucideIcons.walletMinimal,
+  WalletIcon.allowance: LucideIcons.handCoins,
+  WalletIcon.savings: LucideIcons.piggyBank,
+  WalletIcon.creditCard: LucideIcons.creditCard,
+  WalletIcon.investment: LucideIcons.trendingUp,
+  WalletIcon.emergencyFund: LucideIcons.shield,
+  WalletIcon.business: LucideIcons.briefcaseBusiness,
+  WalletIcon.travel: LucideIcons.plane,
+  WalletIcon.education: LucideIcons.graduationCap,
+  WalletIcon.bills: LucideIcons.receipt,
+  WalletIcon.shopping: LucideIcons.shoppingBag,
+  WalletIcon.gift: LucideIcons.gift,
+  WalletIcon.vault: LucideIcons.vault,
+  WalletIcon.salary: LucideIcons.circleStar,
+};

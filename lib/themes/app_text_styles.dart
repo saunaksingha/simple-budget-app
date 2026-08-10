@@ -23,6 +23,12 @@ class AppTextStyles {
         fontWeight: FontWeight.w600,
       );
 
+  static TextStyle smallTextRegular(BuildContext context) =>
+      GoogleFonts.publicSans(
+        fontSize: context.sp(12),
+        fontWeight: FontWeight.normal,
+      );
+
   static TextStyle smallTextSemiBold(BuildContext context) =>
       GoogleFonts.publicSans(
         fontSize: context.sp(12),

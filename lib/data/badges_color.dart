@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 enum BadgeColor {
+  sage,
+  green,
+  mint,
   coral,
   red,
   pink,
@@ -15,9 +18,6 @@ enum BadgeColor {
   purple,
   violet,
   plum,
-  green,
-  sage,
-  mint,
   brown,
   taupe,
   grey,

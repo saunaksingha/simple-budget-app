@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_budget_app/screens/add_transaction/add_transaction_screen.dart';
 import 'package:simple_budget_app/screens/home_screen.dart';
 import 'package:simple_budget_app/screens/select_transaction_category.dart';
+import 'package:simple_budget_app/screens/wallets/add_wattet_screen.dart';
 import 'package:simple_budget_app/screens/wallets/manage_wallets_screen.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColors.backgroundColour,
           ),
         ),
-        home: ManageWalletsScreen(),
+        home: AddWattetScreen(),
       ),
     );
   }
