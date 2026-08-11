@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColors.backgroundColour,
           ),
         ),
-        home: AddWattetScreen(),
+        home: AddTransactionScree(),
       ),
     );
   }
