@@ -45,12 +45,9 @@ class WalletCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(
                         context.sp(AppSpacing.sm),
                       ),
-                      color: badgeBackgroundColors[BadgeColor.green],
+                      color: badgeBackgroundColors[badgeColor],
                     ),
-                    child: Icon(
-                      walletIcon,
-                      color: badgeIconColors[BadgeColor.green],
-                    ),
+                    child: Icon(walletIcon, color: badgeIconColors[badgeColor]),
                   ),
 
                   SizedBox(height: context.h(4)),

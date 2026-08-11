@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:simple_budget_app/core/validator.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
@@ -10,10 +11,12 @@ class TransactionInputfield extends StatefulWidget {
     required this.inputTitle,
     required this.hintText,
     required this.inputFieldIcon,
+    required this.onValidDataInput,
     this.keyboardType,
     this.holdFocus,
     this.backgroundColor,
     this.iconColor,
+    this.inputValidationType,
   });
 
   final String inputTitle;
@@ -23,6 +26,8 @@ class TransactionInputfield extends StatefulWidget {
   final bool? holdFocus;
   final Color? backgroundColor;
   final Color? iconColor;
+  final InputValidationType? inputValidationType;
+  final Function(String? inputData) onValidDataInput;
 
   @override
   State<TransactionInputfield> createState() => _TransactionInputfieldState();
@@ -97,6 +102,24 @@ class _TransactionInputfieldState extends State<TransactionInputfield> {
                       IgnorePointer(
                         ignoring: _ignoreTextFieldTap,
                         child: TextFormField(
+                          onChanged: (value) {
+                            if (widget.inputValidationType != null) {
+                              ValidationResult validationResult =
+                                  Validator.validateData(
+                                    validationType: widget.inputValidationType!,
+                                    stringToBeValidated: value,
+                                  );
+
+                              if (validationResult.status ==
+                                  ValidationStatus.success) {
+                                widget.onValidDataInput(value);
+                              } else {
+                                widget.onValidDataInput(null);
+                              }
+                            } else {
+                              widget.onValidDataInput(value);
+                            }
+                          },
                           onTapOutside: (_) {
                             if (widget.holdFocus == null ||
                                 widget.holdFocus == false) {

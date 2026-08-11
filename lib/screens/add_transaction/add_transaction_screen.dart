@@ -52,25 +52,25 @@ class _AddTransactionScreeState extends State<AddTransactionScree> {
                   colors: [Colors.red, Colors.green, Colors.blueGrey],
                 ),
                 SizedBox(height: context.h(AppSpacing.lg)),
-                TransactionInputfield(
-                  inputTitle: "Amount",
-                  hintText: "0.00",
-                  inputFieldIcon: Icons.currency_rupee,
-                  holdFocus: true,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                ),
 
+                // TransactionInputfield(
+                //   inputTitle: "Amount",
+                //   hintText: "0.00",
+                //   inputFieldIcon: Icons.currency_rupee,
+                //   holdFocus: true,
+                //   keyboardType: const TextInputType.numberWithOptions(
+                //     decimal: true,
+                //   ),
+                // ),
                 SizedBox(height: context.h(AppSpacing.md)),
 
-                TransactionInputfield(
-                  inputTitle: "Title",
-                  hintText: "Short title",
-                  holdFocus: true,
-                  inputFieldIcon: Icons.mode_edit_outline_outlined,
-                  keyboardType: TextInputType.text,
-                ),
+                // TransactionInputfield(
+                //   inputTitle: "Title",
+                //   hintText: "Short title",
+                //   holdFocus: true,
+                //   inputFieldIcon: Icons.mode_edit_outline_outlined,
+                //   keyboardType: TextInputType.text,
+                // ),
                 SizedBox(height: context.h(AppSpacing.md)),
 
                 TransactionSelectionInput(

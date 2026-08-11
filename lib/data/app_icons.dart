@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 enum WalletIcon {
+  purse,
   wallet,
   bank,
   cash,
@@ -23,6 +24,7 @@ enum WalletIcon {
 }
 
 const Map<WalletIcon, IconData> walletIconMap = {
+  WalletIcon.purse: Icons.account_balance_wallet_rounded,
   WalletIcon.wallet: LucideIcons.wallet,
   WalletIcon.bank: LucideIcons.landmark,
   WalletIcon.cash: LucideIcons.banknote,

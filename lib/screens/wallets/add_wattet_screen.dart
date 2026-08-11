@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:simple_budget_app/core/validator.dart';
 import 'package:simple_budget_app/data/app_icons.dart';
 import 'package:simple_budget_app/data/badges_color.dart';
+import 'package:simple_budget_app/db/db_helper.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_inputfield.dart';
 import 'package:simple_budget_app/screens/wallets/widgets/icon_picker.dart';
 import 'package:simple_budget_app/widgets/color_picker.dart';
@@ -18,7 +20,24 @@ class AddWattetScreen extends StatefulWidget {
 }
 
 class _AddWattetScreenState extends State<AddWattetScreen> {
-  WalletIcon? _pickedIcon;
+  WalletIcon _pickedIcon = WalletIcon.purse;
+  BadgeColor _pickedColour = BadgeColor.sage;
+
+  bool canSave = false;
+  String? _walletTitle;
+  double? _inititalWalletBalance;
+
+  void _onDataReceived() {
+    if (_inititalWalletBalance != null && _walletTitle != null) {
+      setState(() {
+        canSave = true;
+      });
+    } else {
+      setState(() {
+        canSave = false;
+      });
+    }
+  }
 
   void _iconPicker() {
     showModalBottomSheet(
@@ -37,8 +56,7 @@ class _AddWattetScreenState extends State<AddWattetScreen> {
     );
   }
 
-  BadgeColor _pickedColour = BadgeColor.sage;
-  bool excludeBalance = false;
+  bool _excludeBalance = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +98,7 @@ class _AddWattetScreenState extends State<AddWattetScreen> {
                       ],
                     ),
                     child: Icon(
-                      walletIconMap[_pickedIcon] ??
-                          Icons.account_balance_wallet_rounded,
+                      walletIconMap[_pickedIcon],
                       size: context.sp(56),
                       color: badgeIconColors[_pickedColour],
                     ),
@@ -129,13 +146,34 @@ class _AddWattetScreenState extends State<AddWattetScreen> {
                 hintText: "Enter wallet name",
                 inputFieldIcon: LucideIcons.pencil,
                 holdFocus: true,
+                inputValidationType: InputValidationType.title,
+                onValidDataInput: (inputData) {
+                  if (inputData == null) {
+                    _walletTitle = null;
+                    _onDataReceived();
+                    return;
+                  }
+
+                  _walletTitle = inputData;
+                  _onDataReceived();
+                },
               ),
               SizedBox(height: AppSpacing.md),
               TransactionInputfield(
                 inputTitle: "Amount",
                 hintText: "Initial balance",
                 inputFieldIcon: LucideIcons.banknoteArrowUp,
+                inputValidationType: InputValidationType.positiveAmount,
                 holdFocus: true,
+                onValidDataInput: (inputData) {
+                  if (inputData == null) {
+                    _inititalWalletBalance = null;
+                    _onDataReceived();
+                    return;
+                  }
+                  _inititalWalletBalance = double.tryParse(inputData);
+                  _onDataReceived();
+                },
               ),
               SizedBox(height: AppSpacing.md),
               ColorPicker(
@@ -197,10 +235,10 @@ class _AddWattetScreenState extends State<AddWattetScreen> {
                       Transform.scale(
                         scale: 0.80,
                         child: Switch(
-                          value: excludeBalance,
+                          value: _excludeBalance,
                           onChanged: (value) {
                             setState(() {
-                              excludeBalance = value;
+                              _excludeBalance = value;
                             });
                           },
                           activeThumbColor: Colors.white,
@@ -217,19 +255,46 @@ class _AddWattetScreenState extends State<AddWattetScreen> {
                 ),
               ),
               SizedBox(height: AppSpacing.md),
-              Container(
-                alignment: Alignment.center,
-                padding: context.edgeInsets(vertical: AppSpacing.md),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColour,
-                  borderRadius: BorderRadius.circular(context.r(AppSpacing.lg)),
-                ),
-                child: Text(
-                  "Save",
-                  style: AppTextStyles.primaryTextBold(
-                    context,
-                  ).copyWith(color: AppColors.textColourPrimary),
+              InkWell(
+                borderRadius: BorderRadius.circular(context.r(AppSpacing.lg)),
+                splashColor: AppColors.secondryColour.withValues(alpha: 0.12),
+                onTap: () async {
+                  if (canSave == false) {
+                    return;
+                  }
+                  final success = await DBHelper.getInstance.addWallet(
+                    walletName: _walletTitle!,
+                    startingBalance: _inititalWalletBalance!,
+                    creationDateTime: DateTime.now().toIso8601String(),
+                    walletColour: _pickedColour,
+                    walletIcon: _pickedIcon,
+                    excludeBalance: _excludeBalance,
+                  );
+
+                  if (success) {
+                    Navigator.pop(context, true);
+                  }
+                },
+
+                child: Ink(
+                  padding: context.edgeInsets(vertical: AppSpacing.md),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: canSave
+                        ? AppColors.primaryColour
+                        : Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(
+                      context.r(AppSpacing.lg),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Save",
+                      style: AppTextStyles.primaryTextBold(
+                        context,
+                      ).copyWith(color: AppColors.textColourPrimary),
+                    ),
+                  ),
                 ),
               ),
             ],
