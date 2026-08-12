@@ -22,31 +22,36 @@ class StatChip extends StatefulWidget {
 class _StatChipState extends State<StatChip> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: AppColors.backgroundCardColour.withValues(alpha: 0.4),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(context.r(AppSpacing.lg)),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.backgroundCardColour,
+        borderRadius: BorderRadius.circular(context.r(AppSpacing.lg)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textColourPrimary.withValues(alpha: 0.06),
+            blurRadius: 10,
+            spreadRadius: 0,
+            offset: const Offset(0, 0),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: context.edgeInsets(
+          left: context.w(8),
+          right: context.w(14),
+          vertical: 6,
         ),
-        child: Padding(
-          padding: context.edgeInsets(
-            left: context.w(8),
-            right: context.w(14),
-            vertical: 6,
-          ),
-          child: Row(
-            children: [
-              Icon(widget.icon, color: widget.iconColour, size: context.w(20)),
-              SizedBox(width: context.w(2)),
-              Text(
-                "\$${Formatters.amount(widget.amount)}",
-                style: AppTextStyles.smallTextSemiBold(
-                  context,
-                ).copyWith(color: AppColors.secondryColour),
-              ),
-            ],
-          ),
+        child: Row(
+          children: [
+            Icon(widget.icon, color: widget.iconColour, size: context.w(20)),
+            SizedBox(width: context.w(2)),
+            Text(
+              "\$${Formatters.amount(widget.amount)}",
+              style: AppTextStyles.smallTextSemiBold(
+                context,
+              ).copyWith(color: AppColors.textColourBody),
+            ),
+          ],
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:simple_budget_app/data/app_icons.dart';
-import 'package:simple_budget_app/data/badges_color.dart';
 import 'package:simple_budget_app/db/db_helper.dart';
 import 'package:simple_budget_app/db/models/wallet_model.dart';
 import 'package:simple_budget_app/screens/wallets/add_wattet_screen.dart';
@@ -69,7 +68,7 @@ class _ManageWalletsScreenState extends State<ManageWalletsScreen> {
                       Spacer(),
 
                       Text(
-                        "5 wallets",
+                        "${walletModels.length} wallets",
                         style: AppTextStyles.bodyTextBold(context).copyWith(
                           color: AppColors.secondryColour,
                           fontSize: context.sp(12),

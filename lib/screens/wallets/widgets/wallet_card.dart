@@ -66,7 +66,7 @@ class WalletCard extends StatelessWidget {
                     balanceText,
                     style: AppTextStyles.primaryTextSemiBold(
                       context,
-                    ).copyWith(color: Colors.green),
+                    ).copyWith(color: Colors.green, fontSize: context.sp(14)),
                   ),
                 ],
               ),
