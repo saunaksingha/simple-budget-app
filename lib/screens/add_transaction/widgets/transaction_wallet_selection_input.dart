@@ -1,32 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:simple_budget_app/data/app_icons.dart';
+import 'package:simple_budget_app/data/badges_color.dart';
+import 'package:simple_budget_app/db/db_helper.dart';
+import 'package:simple_budget_app/db/models/wallet_model.dart';
+import 'package:simple_budget_app/screens/add_transaction/widgets/wallet_picker.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
 
-class TransactionSelectionInput extends StatefulWidget {
-  const TransactionSelectionInput({
-    super.key,
-    required this.selectionTitle,
-    required this.hintText,
-    required this.selectionIcon,
-    required this.onClick,
-    this.selectionIconClour,
-    this.selectionIconBackgroundColour,
-  });
-  final String selectionTitle;
-  final String hintText;
-  final Icon selectionIcon;
-  final Function onClick;
-  final Color? selectionIconClour;
-  final Color? selectionIconBackgroundColour;
+class TransactionWalletSelectionInput extends StatefulWidget {
+  const TransactionWalletSelectionInput({super.key});
 
   @override
-  State<TransactionSelectionInput> createState() =>
-      _TransactionSelectionInputState();
+  State<TransactionWalletSelectionInput> createState() =>
+      _TransactionWalletSelectionInputState();
 }
 
-class _TransactionSelectionInputState extends State<TransactionSelectionInput> {
+class _TransactionWalletSelectionInputState
+    extends State<TransactionWalletSelectionInput> {
+  String title = "Wallet";
+  String hintText = "Select a wallet";
+  IconData selectionIcon = LucideIcons.wallet;
+  Color? selectionIconClour = AppColors.secondryColour;
+  Color? selectionIconBackgroundColour = AppColors.backgroundColour;
+
+  List<WalletModel> walletModels = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadWallets();
+  }
+
+  void _showWalletPicker() async {
+    WalletModel? selectedWallet = await showModalBottomSheet<WalletModel>(
+      context: context,
+      backgroundColor: AppColors.backgroundColour,
+      builder: (context) => Padding(
+        padding: context.edgeInsets(
+          horizontal: AppSpacing.md,
+          top: AppSpacing.xl,
+          bottom: AppSpacing.lg,
+        ),
+        child: WalletPicker(wallets: walletModels),
+      ),
+    );
+
+    if (selectedWallet != null) {
+      setState(() {
+        title = selectedWallet.walletName;
+        hintText = '\$${selectedWallet.currentBalance}';
+        selectionIcon = walletIconMap[selectedWallet.walletIcon]!;
+        selectionIconBackgroundColour =
+            badgeBackgroundColors[selectedWallet.colour];
+        selectionIconClour = badgeIconColors[selectedWallet.colour]!;
+      });
+    }
+  }
+
+  void loadWallets() async {
+    List<WalletModel> wallets = await DBHelper.getInstance.getWallets();
+    setState(() {
+      walletModels = wallets;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -34,10 +74,10 @@ class _TransactionSelectionInputState extends State<TransactionSelectionInput> {
       borderRadius: BorderRadius.circular(context.r(AppSpacing.md)),
       child: InkWell(
         splashColor: AppColors.secondryColour.withValues(alpha: 0.12),
-        onTap: () {
-          widget.onClick();
-        },
         borderRadius: BorderRadius.circular(context.r(AppSpacing.md)),
+        onTap: () {
+          _showWalletPicker();
+        },
         child: Container(
           width: double.infinity,
           padding: context.edgeInsets(
@@ -59,9 +99,9 @@ class _TransactionSelectionInputState extends State<TransactionSelectionInput> {
                     borderRadius: BorderRadius.circular(
                       context.sp(AppSpacing.sm),
                     ),
-                    color: AppColors.backgroundColour,
+                    color: selectionIconBackgroundColour,
                   ),
-                  child: widget.selectionIcon,
+                  child: Icon(selectionIcon, color: selectionIconClour),
                 ),
                 SizedBox(width: context.w(10)),
                 Expanded(
@@ -70,15 +110,15 @@ class _TransactionSelectionInputState extends State<TransactionSelectionInput> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.selectionTitle,
+                        title,
                         style: AppTextStyles.bodyTextBold(
                           context,
                         ).copyWith(color: AppColors.textColourPrimary),
                       ),
 
-                      if (widget.hintText.isNotEmpty)
+                      if (hintText.isNotEmpty)
                         Text(
-                          widget.hintText,
+                          hintText,
                           style: AppTextStyles.bodyTextRegular(context)
                               .copyWith(
                                 color: AppColors.textColourPrimary.withAlpha(

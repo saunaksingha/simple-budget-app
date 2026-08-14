@@ -6,8 +6,7 @@ import 'package:simple_budget_app/provider/transactions_type_provider.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_category_selection_input.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_inputfield.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_memo_inputfield.dart';
-import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_selection_input.dart';
-import 'package:simple_budget_app/screens/select_transaction_category.dart';
+import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_wallet_selection_input.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
@@ -94,43 +93,7 @@ class _AddTransactionScreeState extends ConsumerState<AddTransactionScree> {
                   },
                 ),
                 SizedBox(height: context.h(AppSpacing.md)),
-
-                TransactionSelectionInput(
-                  selectionTitle: "Category",
-                  hintText: "Select a category",
-                  selectionIcon: Icon(Icons.grid_view_outlined),
-
-                  onClick: () async {
-                    final Map<TransactionType, dynamic>?
-                    transactionCategoryDetails =
-                        await Navigator.push<Map<TransactionType, dynamic>>(
-                          context,
-                          MaterialPageRoute(
-                            builder: (contex) => SelectTransactionCategory(
-                              defaultTransactionType:
-                                  _selectedTransactionCategory,
-                            ),
-                          ),
-                        );
-
-                    if (transactionCategoryDetails != null) {
-                      final entry = transactionCategoryDetails.entries.first;
-                      _selectedTransactionCategory = entry.key;
-
-                      if (entry.key == TransactionType.expense) {
-                      } else if (entry.key == TransactionType.income) {
-                      } else {}
-                    }
-                  },
-                ),
-
-                SizedBox(height: context.h(AppSpacing.md)),
-                // TransactionSelectionInput(
-                //   selectionTitle: "Wallet",
-                //   hintText: "Select a wallet",
-                //   selectionIcon: Icon(Icons.account_balance_wallet_outlined),
-                //   onClick: () {},
-                // ),
+                TransactionWalletSelectionInput(),
                 SizedBox(height: context.h(AppSpacing.md)),
                 TransactionMemoInputField(
                   inputTitle: "Memo",

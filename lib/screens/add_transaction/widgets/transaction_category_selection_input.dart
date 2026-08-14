@@ -135,6 +135,5 @@ class _TransactionCategorySelectionInputState
         ),
       ),
     );
-    ;
   }
 }

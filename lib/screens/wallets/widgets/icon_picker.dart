@@ -72,37 +72,3 @@ class _IconPickerState extends State<IconPicker> {
     );
   }
 }
-
-//  GestureDetector(
-//
-//       child: Container(
-//         width: context.w(32),
-//         height: context.h(32),
-//         decoration: BoxDecoration(
-//           shape: BoxShape.circle,
-//           border: Border.all(
-//             color: _selectedColour == badgeColor
-//                 ? badgeIconColors[badgeColor]!
-//                 : AppColors.backgroundCardColour,
-//             width: context.w(4),
-//           ),
-//         ),
-//         child: Center(
-//           child: Container(
-//             width: context.w(24),
-//             height: context.w(24),
-//             decoration: BoxDecoration(
-//               shape: BoxShape.circle,
-//               color: badgeBackgroundColors[badgeColor],
-//               boxShadow: [
-//                 BoxShadow(
-//                   color: Colors.black.withValues(alpha: 0.08),
-//                   blurRadius: 4,
-//                   offset: const Offset(0, 1),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
