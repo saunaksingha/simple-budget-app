@@ -19,25 +19,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColour,
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundCardColour,
-
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
-        centerTitle: true,
-        title: Text(
-          "Home",
-          style: AppTextStyles.primaryTextBold(
-            context,
-          ).copyWith(color: AppColors.secondryColour),
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.calendar_month)),
-        ],
-      ),
-      body: Column(
+    return SingleChildScrollView(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -96,41 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: context.h(AppSpacing.md)),
           TransactionList(),
         ],
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: context.edgeInsets(top: 16, bottom: 8, horizontal: 16),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
-                blurRadius: context.sp(12),
-                spreadRadius: 0,
-                offset: const Offset(0, -3),
-              ),
-            ],
-            color: AppColors.backgroundColour,
-            border: Border(
-              top: BorderSide(
-                color: AppColors.secondryColour.withValues(alpha: 0.12),
-                width: 1,
-              ),
-            ),
-          ),
-          child: GNav(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOutCubic,
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            tabBackgroundColor: AppColors.primaryColour,
-            gap: 8,
-            tabs: [
-              GButton(icon: LucideIcons.home, iconSize: context.sp(24)),
-              GButton(icon: LucideIcons.chartPie, iconSize: context.sp(24)),
-              GButton(icon: LucideIcons.flag, iconSize: context.sp(24)),
-              GButton(icon: LucideIcons.wallet, iconSize: context.sp(24)),
-            ],
-          ),
-        ),
       ),
     );
   }

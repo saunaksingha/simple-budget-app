@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:simple_budget_app/data/categories.dart';
+import 'package:simple_budget_app/provider/transactions_type_provider.dart';
+import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_category_selection_input.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_inputfield.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_memo_inputfield.dart';
 import 'package:simple_budget_app/screens/add_transaction/widgets/transaction_selection_input.dart';
+import 'package:simple_budget_app/screens/select_transaction_category.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/utils/formatter.dart';
 import 'package:simple_budget_app/widgets/app_segmented_control.dart';
 
-class AddTransactionScree extends StatefulWidget {
+class AddTransactionScree extends ConsumerStatefulWidget {
   const AddTransactionScree({super.key}) : category = ExpenseCategory.bills;
 
   final ExpenseCategory category;
 
   @override
-  State<AddTransactionScree> createState() => _AddTransactionScreeState();
+  ConsumerState<AddTransactionScree> createState() =>
+      _AddTransactionScreeState();
 }
 
-class _AddTransactionScreeState extends State<AddTransactionScree> {
-  TransactionCategory _selectedTransactionCategory = TransactionCategory.income;
+class _AddTransactionScreeState extends ConsumerState<AddTransactionScree> {
+  TransactionType _selectedTransactionCategory = TransactionType.expense;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +47,14 @@ class _AddTransactionScreeState extends State<AddTransactionScree> {
             child: Column(
               children: [
                 AppSegmentedControl(
-                  items: TransactionCategory.values,
+                  items: TransactionType.values,
                   selectedItem: _selectedTransactionCategory,
                   onChanged: (value) {
                     setState(() {
                       _selectedTransactionCategory = value;
+                      ref
+                          .read(transactionTypeProvider.notifier)
+                          .toggleTransactionType(value);
                     });
                   },
                   labelBuilder: (item) => Formatters.capitalize(item.name),
@@ -53,38 +62,75 @@ class _AddTransactionScreeState extends State<AddTransactionScree> {
                 ),
                 SizedBox(height: context.h(AppSpacing.lg)),
 
-                // TransactionInputfield(
-                //   inputTitle: "Amount",
-                //   hintText: "0.00",
-                //   inputFieldIcon: Icons.currency_rupee,
-                //   holdFocus: true,
-                //   keyboardType: const TextInputType.numberWithOptions(
-                //     decimal: true,
-                //   ),
-                // ),
+                TransactionInputfield(
+                  inputTitle: "Amount",
+                  hintText: "0.00",
+                  inputFieldIcon: Icons.currency_rupee,
+                  holdFocus: true,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  onValidDataInput: (inputData) {},
+                ),
                 SizedBox(height: context.h(AppSpacing.md)),
 
-                // TransactionInputfield(
-                //   inputTitle: "Title",
-                //   hintText: "Short title",
-                //   holdFocus: true,
-                //   inputFieldIcon: Icons.mode_edit_outline_outlined,
-                //   keyboardType: TextInputType.text,
-                // ),
+                TransactionInputfield(
+                  inputTitle: "Title",
+                  hintText: "Short title",
+                  holdFocus: true,
+                  inputFieldIcon: Icons.mode_edit_outline_outlined,
+                  keyboardType: TextInputType.text,
+                  onValidDataInput: (inputData) {},
+                ),
+                SizedBox(height: context.h(AppSpacing.md)),
+
+                TransactionCategorySelectionInput(
+                  onCategorySelect: () {
+                    setState(() {
+                      _selectedTransactionCategory = ref.watch(
+                        transactionTypeProvider,
+                      );
+                    });
+                  },
+                ),
                 SizedBox(height: context.h(AppSpacing.md)),
 
                 TransactionSelectionInput(
                   selectionTitle: "Category",
                   hintText: "Select a category",
                   selectionIcon: Icon(Icons.grid_view_outlined),
+
+                  onClick: () async {
+                    final Map<TransactionType, dynamic>?
+                    transactionCategoryDetails =
+                        await Navigator.push<Map<TransactionType, dynamic>>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (contex) => SelectTransactionCategory(
+                              defaultTransactionType:
+                                  _selectedTransactionCategory,
+                            ),
+                          ),
+                        );
+
+                    if (transactionCategoryDetails != null) {
+                      final entry = transactionCategoryDetails.entries.first;
+                      _selectedTransactionCategory = entry.key;
+
+                      if (entry.key == TransactionType.expense) {
+                      } else if (entry.key == TransactionType.income) {
+                      } else {}
+                    }
+                  },
                 ),
 
                 SizedBox(height: context.h(AppSpacing.md)),
-                TransactionSelectionInput(
-                  selectionTitle: "Wallet",
-                  hintText: "Select a wallet",
-                  selectionIcon: Icon(Icons.account_balance_wallet_outlined),
-                ),
+                // TransactionSelectionInput(
+                //   selectionTitle: "Wallet",
+                //   hintText: "Select a wallet",
+                //   selectionIcon: Icon(Icons.account_balance_wallet_outlined),
+                //   onClick: () {},
+                // ),
                 SizedBox(height: context.h(AppSpacing.md)),
                 TransactionMemoInputField(
                   inputTitle: "Memo",

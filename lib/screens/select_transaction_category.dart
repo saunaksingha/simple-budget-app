@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:simple_budget_app/data/categories.dart';
+import 'package:simple_budget_app/provider/transactions_type_provider.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
@@ -9,16 +11,28 @@ import 'package:simple_budget_app/widgets/app_segmented_control.dart';
 import 'package:simple_budget_app/widgets/transaction-categories-list/expense_categories_list.dart';
 import 'package:simple_budget_app/widgets/transaction-categories-list/income_categories_list.dart';
 
-class SelectTransactionCategory extends StatefulWidget {
-  const SelectTransactionCategory({super.key});
+class SelectTransactionCategory extends ConsumerStatefulWidget {
+  const SelectTransactionCategory({
+    super.key,
+    required this.defaultTransactionType,
+  });
+
+  final TransactionType defaultTransactionType;
 
   @override
-  State<SelectTransactionCategory> createState() =>
+  ConsumerState<SelectTransactionCategory> createState() =>
       _SelectTransactionCategoryState();
 }
 
-class _SelectTransactionCategoryState extends State<SelectTransactionCategory> {
-  TransactionCategory _selectedTransactionCategory = TransactionCategory.income;
+class _SelectTransactionCategoryState
+    extends ConsumerState<SelectTransactionCategory> {
+  late TransactionType _selectedTransactionCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTransactionCategory = widget.defaultTransactionType;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +57,15 @@ class _SelectTransactionCategoryState extends State<SelectTransactionCategory> {
           ),
           child: Column(
             children: [
-              AppSegmentedControl<TransactionCategory>(
-                items: const [
-                  TransactionCategory.expense,
-                  TransactionCategory.income,
-                ],
+              AppSegmentedControl<TransactionType>(
+                items: const [TransactionType.expense, TransactionType.income],
                 selectedItem: _selectedTransactionCategory,
                 onChanged: (value) {
                   setState(() {
                     _selectedTransactionCategory = value;
+                    ref
+                        .read(transactionTypeProvider.notifier)
+                        .toggleTransactionType(value);
                   });
                 },
                 labelBuilder: (item) => Formatters.capitalize(item.name),
@@ -62,10 +76,21 @@ class _SelectTransactionCategoryState extends State<SelectTransactionCategory> {
                 duration: const Duration(milliseconds: 500),
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOutQuint,
-                child:
-                    _selectedTransactionCategory == TransactionCategory.income
-                    ? IncomeCategoriesListWidget()
-                    : ExpenseCategoriesListWidget(),
+                child: _selectedTransactionCategory == TransactionType.income
+                    ? IncomeCategoriesListWidget(
+                        onSelectIncome: (incomeCategory) {
+                          Navigator.pop(context, {
+                            TransactionType.income: incomeCategory,
+                          });
+                        },
+                      )
+                    : ExpenseCategoriesListWidget(
+                        onSelectExpense: (expenseCategory) {
+                          Navigator.pop(context, {
+                            TransactionType.expense: expenseCategory,
+                          });
+                        },
+                      ),
               ),
             ],
           ),

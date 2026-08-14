@@ -7,8 +7,9 @@ import 'package:simple_budget_app/themes/app_text_styles.dart';
 import 'package:simple_budget_app/utils/formatter.dart';
 
 class IncomeCategoriesListWidget extends StatefulWidget {
-  const IncomeCategoriesListWidget({super.key});
+  const IncomeCategoriesListWidget({super.key, required this.onSelectIncome});
 
+  final Function(IncomeCategory incomeCategory) onSelectIncome;
   @override
   State<IncomeCategoriesListWidget> createState() =>
       _IncomeCategoriesListWidgetState();
@@ -17,14 +18,20 @@ class IncomeCategoriesListWidget extends StatefulWidget {
 class _IncomeCategoriesListWidgetState
     extends State<IncomeCategoriesListWidget> {
   IncomeCategory? _selectedIncomeCategory;
+
+  void onChangeCategory(IncomeCategory? value) {
+    setState(() {
+      _selectedIncomeCategory = value!;
+      widget.onSelectIncome(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return RadioGroup(
       groupValue: _selectedIncomeCategory,
       onChanged: (IncomeCategory? value) {
-        setState(() {
-          _selectedIncomeCategory = value;
-        });
+        onChangeCategory(value);
       },
       child: Column(
         children: [
@@ -39,9 +46,7 @@ class _IncomeCategoriesListWidgetState
                 return null;
               }),
               onTap: () {
-                setState(() {
-                  _selectedIncomeCategory = category;
-                });
+                onChangeCategory(category);
               },
               child: Container(
                 width: double.infinity,

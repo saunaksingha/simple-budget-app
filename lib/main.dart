@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_budget_app/screens/home_screen/home_screen.dart';
-import 'package:simple_budget_app/screens/select_transaction_category.dart';
-import 'package:simple_budget_app/screens/wallets/manage_wallets_screen.dart';
+import 'package:simple_budget_app/screens/main_screen.dart';
 import 'package:simple_budget_app/themes/app_colors.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColors.backgroundColour,
           ),
         ),
-        home: HomeScreen(),
+        home: MainScreen(),
       ),
     );
   }

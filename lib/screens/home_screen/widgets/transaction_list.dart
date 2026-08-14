@@ -27,12 +27,12 @@ class TransactionList extends StatelessWidget {
                 height: context.h(38),
                 width: context.w(38),
                 decoration: BoxDecoration(
-                  color: badgeBackgroundColors[BadgeColor.amber],
+                  color: AppColors.secondryColour,
                   borderRadius: BorderRadius.circular(context.r(AppSpacing.md)),
                 ),
                 child: Icon(
                   LucideIcons.calendarRange,
-                  color: badgeIconColors[BadgeColor.amber],
+                  color: AppColors.surfaceColor,
                   size: context.sp(20),
                 ),
               ),
@@ -98,7 +98,7 @@ class TransactionList extends StatelessWidget {
             transactionWallet: "Cash",
             transactionTime: "8:15 AM",
             transactionCategory: ExpenseCategory.bills,
-            transactionType: TransactionCategory.expense,
+            transactionType: TransactionType.expense,
           ),
         ],
       ),

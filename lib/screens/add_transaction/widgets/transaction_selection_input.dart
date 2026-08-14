@@ -4,16 +4,29 @@ import 'package:simple_budget_app/themes/app_colors.dart';
 import 'package:simple_budget_app/themes/app_spacing.dart';
 import 'package:simple_budget_app/themes/app_text_styles.dart';
 
-class TransactionSelectionInput extends StatelessWidget {
+class TransactionSelectionInput extends StatefulWidget {
   const TransactionSelectionInput({
     super.key,
     required this.selectionTitle,
     required this.hintText,
     required this.selectionIcon,
+    required this.onClick,
+    this.selectionIconClour,
+    this.selectionIconBackgroundColour,
   });
   final String selectionTitle;
   final String hintText;
   final Icon selectionIcon;
+  final Function onClick;
+  final Color? selectionIconClour;
+  final Color? selectionIconBackgroundColour;
+
+  @override
+  State<TransactionSelectionInput> createState() =>
+      _TransactionSelectionInputState();
+}
+
+class _TransactionSelectionInputState extends State<TransactionSelectionInput> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -21,7 +34,9 @@ class TransactionSelectionInput extends StatelessWidget {
       borderRadius: BorderRadius.circular(context.r(AppSpacing.md)),
       child: InkWell(
         splashColor: AppColors.secondryColour.withValues(alpha: 0.12),
-        onTap: () {},
+        onTap: () {
+          widget.onClick();
+        },
         borderRadius: BorderRadius.circular(context.r(AppSpacing.md)),
         child: Container(
           width: double.infinity,
@@ -46,23 +61,31 @@ class TransactionSelectionInput extends StatelessWidget {
                     ),
                     color: AppColors.backgroundColour,
                   ),
-                  child: selectionIcon,
+                  child: widget.selectionIcon,
                 ),
                 SizedBox(width: context.w(10)),
                 Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectionTitle,
+                        widget.selectionTitle,
                         style: AppTextStyles.bodyTextBold(
                           context,
                         ).copyWith(color: AppColors.textColourPrimary),
                       ),
-                      Text(
-                        hintText,
-                        style: AppTextStyles.bodyTextRegular(context),
-                      ),
+
+                      if (widget.hintText.isNotEmpty)
+                        Text(
+                          widget.hintText,
+                          style: AppTextStyles.bodyTextRegular(context)
+                              .copyWith(
+                                color: AppColors.textColourPrimary.withAlpha(
+                                  120,
+                                ),
+                              ),
+                        ),
                     ],
                   ),
                 ),

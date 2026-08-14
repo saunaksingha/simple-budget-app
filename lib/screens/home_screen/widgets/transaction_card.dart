@@ -19,13 +19,13 @@ class TransactionCard extends StatelessWidget {
   final String transactionTitle;
   final String transactionWallet;
   final String transactionTime;
-  final TransactionCategory transactionType;
+  final TransactionType transactionType;
   final dynamic transactionCategory;
 
   @override
   Widget build(BuildContext context) {
     Widget transactionBadge() {
-      if (transactionType == TransactionCategory.income) {
+      if (transactionType == TransactionType.income) {
         return incomeCategoryWidget(
           context: context,
           incomeCategory: transactionCategory as IncomeCategory,

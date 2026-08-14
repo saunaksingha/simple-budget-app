@@ -37,144 +37,127 @@ class _ManageWalletsScreenState extends State<ManageWalletsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-        centerTitle: true,
-        title: Text(
-          "Wallets",
-          style: AppTextStyles.primaryTextBold(
-            context,
-          ).copyWith(color: AppColors.secondryColour),
-        ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            WalletBalanceCard(),
-            SizedBox(height: context.h(AppSpacing.md)),
-            Padding(
-              padding: context.edgeInsets(horizontal: AppSpacing.lg),
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Your Wallets",
-                        style: AppTextStyles.bodyTextBold(context),
-                      ),
-                      Spacer(),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          WalletBalanceCard(),
+          SizedBox(height: context.h(AppSpacing.md)),
+          Padding(
+            padding: context.edgeInsets(horizontal: AppSpacing.lg),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Your Wallets",
+                      style: AppTextStyles.bodyTextBold(context),
+                    ),
+                    Spacer(),
 
-                      Text(
-                        "${walletModels.length} wallets",
-                        style: AppTextStyles.bodyTextBold(context).copyWith(
-                          color: AppColors.secondryColour,
-                          fontSize: context.sp(12),
-                        ),
+                    Text(
+                      "${walletModels.length} wallets",
+                      style: AppTextStyles.bodyTextBold(context).copyWith(
+                        color: AppColors.secondryColour,
+                        fontSize: context.sp(12),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: context.h(AppSpacing.lg)),
+                GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: context.w(AppSpacing.md), // horizontal gap
+                  mainAxisSpacing: context.h(AppSpacing.md),
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  mainAxisExtent: context.h(156),
+                  children: [
+                    for (WalletModel walletModel in walletModels) ...[
+                      WalletCard(
+                        walletTitle: walletModel.walletName,
+                        balanceText: "\$${walletModel.currentBalance}",
+                        walletIcon: walletIconMap[walletModel.walletIcon]!,
+                        badgeColor: walletModel.colour,
                       ),
                     ],
-                  ),
-                  SizedBox(height: context.h(AppSpacing.lg)),
-                  GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: context.w(
-                      AppSpacing.md,
-                    ), // horizontal gap
-                    mainAxisSpacing: context.h(AppSpacing.md),
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    mainAxisExtent: context.h(156),
-                    children: [
-                      for (WalletModel walletModel in walletModels) ...[
-                        WalletCard(
-                          walletTitle: walletModel.walletName,
-                          balanceText: "\$${walletModel.currentBalance}",
-                          walletIcon: walletIconMap[walletModel.walletIcon]!,
-                          badgeColor: walletModel.colour,
-                        ),
-                      ],
-                      Material(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(
-                          context.r(AppSpacing.md),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: InkWell(
-                          onTap: () async {
-                            final bool? added = await Navigator.push<bool>(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddWattetScreen(),
-                              ),
-                            );
+                    Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(
+                        context.r(AppSpacing.md),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: () async {
+                          final bool? added = await Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddWattetScreen(),
+                            ),
+                          );
 
-                            if (added == true) {
-                              loadWallets();
-                            }
-                          },
-                          splashColor: AppColors.secondryColour.withValues(
-                            alpha: 0.12,
+                          if (added == true) {
+                            loadWallets();
+                          }
+                        },
+                        splashColor: AppColors.secondryColour.withValues(
+                          alpha: 0.12,
+                        ),
+                        child: DottedBorder(
+                          options: RoundedRectDottedBorderOptions(
+                            radius: Radius.circular(context.r(AppSpacing.md)),
+                            dashPattern: const [10, 5],
+                            strokeWidth: 1.5,
+                            padding: EdgeInsets.zero,
+                            color: AppColors.textColourSecondry.withValues(
+                              alpha: 0.35,
+                            ),
                           ),
-                          child: DottedBorder(
-                            options: RoundedRectDottedBorderOptions(
-                              radius: Radius.circular(context.r(AppSpacing.md)),
-                              dashPattern: const [10, 5],
-                              strokeWidth: 1.5,
-                              padding: EdgeInsets.zero,
-                              color: AppColors.textColourSecondry.withValues(
-                                alpha: 0.35,
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              color: AppColors.backgroundCardColour.withAlpha(
+                                50,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                context.r(AppSpacing.md),
                               ),
                             ),
-                            child: Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: AppColors.backgroundCardColour.withAlpha(
-                                  50,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  context.r(AppSpacing.md),
-                                ),
-                              ),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.add_circle,
-                                        color: AppColors.secondryColour,
-                                      ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.add_circle,
+                                      color: AppColors.secondryColour,
+                                    ),
 
-                                      Text(
-                                        'Add wallet',
-                                        style:
-                                            AppTextStyles.bodyTextBold(
-                                              context,
-                                            ).copyWith(
-                                              fontSize: context.sp(12),
-                                              color: AppColors.textColourBody,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    Text(
+                                      'Add wallet',
+                                      style: AppTextStyles.bodyTextBold(context)
+                                          .copyWith(
+                                            fontSize: context.sp(12),
+                                            color: AppColors.textColourBody,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: context.h(56)),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: context.h(56)),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

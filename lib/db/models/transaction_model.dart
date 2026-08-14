@@ -1,5 +1,3 @@
-import 'package:simple_budget_app/db/tabels/transaction_table.dart';
-
 class TransactionModel {
   final String id;
   final double amount;

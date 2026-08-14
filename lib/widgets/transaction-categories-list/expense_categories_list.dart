@@ -7,8 +7,9 @@ import 'package:simple_budget_app/themes/app_text_styles.dart';
 import 'package:simple_budget_app/utils/formatter.dart';
 
 class ExpenseCategoriesListWidget extends StatefulWidget {
-  const ExpenseCategoriesListWidget({super.key});
+  const ExpenseCategoriesListWidget({super.key, required this.onSelectExpense});
 
+  final Function(ExpenseCategory expenseCategory) onSelectExpense;
   @override
   State<ExpenseCategoriesListWidget> createState() =>
       _ExpenseCategoriesListWidgetState();
@@ -16,6 +17,13 @@ class ExpenseCategoriesListWidget extends StatefulWidget {
 
 class _ExpenseCategoriesListWidgetState
     extends State<ExpenseCategoriesListWidget> {
+  void onChangeCategory(ExpenseCategory? value) {
+    setState(() {
+      _selectedExpenseCategory = value!;
+      widget.onSelectExpense(value);
+    });
+  }
+
   ExpenseCategory? _selectedExpenseCategory;
 
   @override
@@ -23,9 +31,7 @@ class _ExpenseCategoriesListWidgetState
     return RadioGroup(
       groupValue: _selectedExpenseCategory,
       onChanged: (ExpenseCategory? value) {
-        setState(() {
-          _selectedExpenseCategory = value;
-        });
+        onChangeCategory(value);
       },
       child: Column(
         children: [
@@ -41,7 +47,7 @@ class _ExpenseCategoriesListWidgetState
               }),
               onTap: () {
                 setState(() {
-                  _selectedExpenseCategory = category;
+                  onChangeCategory(category);
                 });
               },
               child: Container(
